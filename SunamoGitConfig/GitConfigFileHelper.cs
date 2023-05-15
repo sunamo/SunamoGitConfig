@@ -54,7 +54,7 @@ public class GitConfigFileHelper
             }
             else
             {
-                ThrowExGitConfig.NotImplementedCase(item);
+                ThrowEx.NotImplementedCase(item);
             }
         }
 

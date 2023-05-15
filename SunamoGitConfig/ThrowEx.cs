@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SunamoGitConfig
 {
-    internal class ThrowExGitConfig
+    internal class ThrowEx
     {
         public static void NotImplementedCase(string _case)
         {
