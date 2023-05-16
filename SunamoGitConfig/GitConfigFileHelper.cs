@@ -1,14 +1,11 @@
+using System.Text;
+
 using SunamoGitConfig;
+using SunamoGitConfig.Consts;
 using SunamoGitConfig.Data;
 
-public class GitConfigFileHelper
+public class GitConfigFileHelper : BlockNames
 {
-    public const string coreStart = "[core]";
-    public const string remoteStart = "[remote ";
-    public const string branchStart = "[branch ";
-    public const string mergeStart = "[merge]";
-    public const string mergetoolStart = "[mergetool]";
-
     public static string Format(string actual)
     {
         var l = SH.GetLines(actual);
@@ -29,58 +26,106 @@ public class GitConfigFileHelper
         return SH.JoinNL(l).Trim();
     }
 
-    public static ExistsNonExistsListGitConfig<GitConfigSection> ExistsBlocks(string s)
+    public static void Save(string path, ExistsNonExistsListGitConfig content)
     {
-        var r = new ExistsNonExistsListGitConfig<GitConfigSection>();
-        var result = r.Exists;
-        var l = ParseBlocks(s);
-        foreach (var item in l)
-        {
-            if (item.StartsWith(coreStart))
-            {
-                result.Add(GitConfigSection.core);
-            }
-            else if (item.StartsWith(remoteStart))
-            {
-                result.Add(GitConfigSection.remote);
-            }
-            else if (item.StartsWith(branchStart))
-            {
-                result.Add(GitConfigSection.branch);
-            }
-            else if(item == mergeStart || item == mergetoolStart)
-            {
+        StringBuilder sb = new StringBuilder();
 
+        foreach (var item in content.Exists)
+        {
+            AppendBlock(sb, item);
+        }
+
+        var ts = sb.ToString();
+        File.WriteAllText(path, ts);
+    }
+
+
+
+    private static void AppendBlock(StringBuilder sb, GitConfigSectionData data)
+    {
+        if (!data.Settings.Any())
+        {
+            return;
+        }
+        sb.AppendLine(AllStrings.lsqb + data.Section + PostfixForBlock(data.Section) + AllStrings.rsqb);
+        foreach (var item in data.Settings)
+        {
+            sb.AppendLine("\t" + item.Key + AllStrings.swes + item.Value);
+        }
+    }
+
+    private static string PostfixForBlock(GitConfigSection section)
+    {
+        switch (section)
+        {
+            case GitConfigSection.remote:
+                return " \"origin\"";
+            case GitConfigSection.branch:
+                return " \"master\"";
+
+            case GitConfigSection.core:
+            case GitConfigSection.merge:
+            case GitConfigSection.mergetool:
+                break;
+            default:
+                ThrowEx.NotImplementedCase(section);
+                break;
+        }
+        return "";
+    }
+
+    public static ExistsNonExistsListGitConfig Load(string path)
+    {
+        return Parse(File.ReadAllText(path));
+    }
+
+    public static ExistsNonExistsListGitConfig Parse(string gitConfigFileContent)
+    {
+        var result = new ExistsNonExistsListGitConfig();
+        var lines = SH.GetLines(gitConfigFileContent);
+
+        GitConfigSectionParser parser = new GitConfigSectionParser();
+
+        foreach (var item2 in lines)
+        {
+            var item = item2.Trim();
+            if (item.StartsWith("["))
+            {
+                if (item.StartsWith(coreStart))
+                {
+                    parser.AddHeaderBlock(GitConfigSection.core);
+                }
+                else if (item.StartsWith(remoteStart))
+                {
+                    parser.AddHeaderBlock(GitConfigSection.remote);
+                }
+                else if (item.StartsWith(branchStart))
+                {
+                    parser.AddHeaderBlock(GitConfigSection.branch);
+                }
+                else if (item == mergeStart || item == mergetoolStart)
+                {
+                }
+                else
+                {
+                    ThrowEx.NotImplementedCase(item);
+                }
             }
             else
             {
-                ThrowEx.NotImplementedCase(item);
+                parser.AddSettingsPair(item);
             }
         }
 
-        var values = Enum.GetValues <GitConfigSection>().ToList();
+        result.Exists = parser.Values();
+
+        var keys = parser.Keys();
+        var values = Enum.GetValues<GitConfigSection>().ToList();
         foreach (var item in values)
         {
-            if (!result.Contains(item))
+            if (!keys.Contains(item))
             {
-                r.NonExists.Add(item);
-            }
-        }
-
-        return r;
-    }
-
-    public static List<string> ParseBlocks(string s)
-    {
-        List<string> result = new List<string>();
-
-        var l = SH.GetLines(s);
-        for (int i = 0; i < l.Count; i++)
-        {
-            var line = l[i];
-            if (line.StartsWith("["))
-            {
-                result.Add(line);
+                result.NonExists.Add(new GitConfigSectionData(item));
             }
         }
 

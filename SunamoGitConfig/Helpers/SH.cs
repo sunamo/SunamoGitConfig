@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using static System.Net.Mime.MediaTypeNames;
-
-namespace SunamoGitConfig
+namespace SunamoGitConfig.Helpers
 {
     internal class SH
     {
@@ -24,11 +21,6 @@ namespace SunamoGitConfig
             }
 
             return result;
-        }
-
-        internal static string JoinNL(List<string> lines)
-        {
-            return string.Join(Environment.NewLine, lines);
         }
     }
 }
