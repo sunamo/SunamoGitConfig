@@ -1,9 +1,3 @@
-using System.Text;
-
-using SunamoGitConfig;
-using SunamoGitConfig.Consts;
-using SunamoGitConfig.Data;
-
 public class GitConfigFileHelper : BlockNames
 {
     public static string Format(string actual)
