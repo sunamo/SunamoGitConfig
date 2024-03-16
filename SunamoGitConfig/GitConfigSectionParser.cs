@@ -1,6 +1,6 @@
 namespace SunamoGitConfig
 {
-    internal class GitConfigSectionParser
+    public class GitConfigSectionParser
     {
         Dictionary<GitConfigSection, GitConfigSectionData> result2 = new Dictionary<GitConfigSection, GitConfigSectionData>();
         GitConfigSectionData last = null;

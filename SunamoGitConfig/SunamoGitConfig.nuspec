@@ -5,7 +5,6 @@
     <version>1.0.0</version>
     <title>SunamoGitConfig</title>
     <authors>sunamo</authors>
-      <description>Serializer and deserializer for .git config files</description>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
 	  <icon>SunamoGitConfig.png</icon>

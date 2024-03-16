@@ -2,7 +2,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace SunamoGitConfig
 {
-    internal class SH
+    public class SH
     {
         public static List<string> GetLines(string text)
         {
@@ -20,7 +20,7 @@ namespace SunamoGitConfig
             return result;
         }
 
-        internal static string JoinNL(List<string> lines)
+        public static string JoinNL(List<string> lines)
         {
             return string.Join(Environment.NewLine, lines);
         }

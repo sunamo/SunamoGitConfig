@@ -1,6 +1,6 @@
 namespace SunamoGitConfig.Helpers
 {
-    internal class SH
+    public class SH
     {
         public static List<string> GetLines(string text)
         {

@@ -1,6 +1,6 @@
 namespace SunamoGitConfig.Consts
 {
-    internal class AllStrings
+    public class AllStrings
     {
         /// <summary>
         /// space wrapped equal sign

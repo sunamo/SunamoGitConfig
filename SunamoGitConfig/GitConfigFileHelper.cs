@@ -1,8 +1,11 @@
+using SunamoStringGetLines;
+using SunamoStringJoin;
+
 public class GitConfigFileHelper : BlockNames
 {
     public static string Format(string actual)
     {
-        var l = SH.GetLines(actual);
+        var l = SHGetLines.GetLines(actual);
         for (int i = 0; i < l.Count; i++)
         {
             var line = l[i];
@@ -17,7 +20,7 @@ public class GitConfigFileHelper : BlockNames
             }
         }
 
-        return SH.JoinNL(l).Trim();
+        return SHJoin.JoinNL(l).Trim();
     }
 
     public static void Save(string path, ExistsNonExistsListGitConfig content)
@@ -32,8 +35,6 @@ public class GitConfigFileHelper : BlockNames
         var ts = sb.ToString();
         File.WriteAllText(path, ts);
     }
-
-
 
     private static void AppendBlock(StringBuilder sb, GitConfigSectionData data)
     {
@@ -76,7 +77,7 @@ public class GitConfigFileHelper : BlockNames
     public static ExistsNonExistsListGitConfig Parse(string gitConfigFileContent)
     {
         var result = new ExistsNonExistsListGitConfig();
-        var lines = SH.GetLines(gitConfigFileContent);
+        var lines = SHGetLines.GetLines(gitConfigFileContent);
 
         GitConfigSectionParser parser = new GitConfigSectionParser();
 
