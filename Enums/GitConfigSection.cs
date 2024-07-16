@@ -1,5 +1,5 @@
-
 namespace SunamoGitConfig.Enums;
+
 public enum GitConfigSection
 {
     core,

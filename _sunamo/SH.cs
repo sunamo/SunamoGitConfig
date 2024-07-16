@@ -1,5 +1,4 @@
-using static System.Net.Mime.MediaTypeNames;
-using static System.Net.Mime.MediaTypeNames;
+
 namespace SunamoGitConfig._sunamo;
 internal class SH
 {
