@@ -1,4 +1,3 @@
-
 namespace SunamoGitConfig;
 
 public class GitConfigFileHelper : BlockNames
