@@ -5,18 +5,12 @@ public class GitConfigFileHelper : BlockNames
     public static string Format(string actual)
     {
         var l = SHGetLines.GetLines(actual);
-        for (int i = 0; i < l.Count; i++)
+        for (var i = 0; i < l.Count; i++)
         {
             var line = l[i];
-            if (line.StartsWith("["))
-            {
-                continue;
-            }
+            if (line.StartsWith("[")) continue;
 
-            if (line.StartsWith("\t"))
-            {
-                line = "\t" + line;
-            }
+            if (line.StartsWith("\t")) line = "\t" + line;
         }
 
         return SHJoin.JoinNL(l).Trim();
@@ -24,12 +18,9 @@ public class GitConfigFileHelper : BlockNames
 
     public static void Save(string path, ExistsNonExistsListGitConfig content)
     {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
 
-        foreach (var item in content.Exists)
-        {
-            AppendBlock(sb, item);
-        }
+        foreach (var item in content.Exists) AppendBlock(sb, item);
 
         var ts = sb.ToString();
         File.WriteAllText(path, ts);
@@ -37,15 +28,9 @@ public class GitConfigFileHelper : BlockNames
 
     private static void AppendBlock(StringBuilder sb, GitConfigSectionData data)
     {
-        if (!data.Settings.Any())
-        {
-            return;
-        }
+        if (!data.Settings.Any()) return;
         sb.AppendLine(AllStrings.lsqb + data.Section + PostfixForBlock(data.Section) + AllStrings.rsqb);
-        foreach (var item in data.Settings)
-        {
-            sb.AppendLine("\t" + item.Key + AllStrings.swes + item.Value);
-        }
+        foreach (var item in data.Settings) sb.AppendLine("\t" + item.Key + AllStrings.swes + item.Value);
     }
 
     private static string PostfixForBlock(GitConfigSection section)
@@ -65,6 +50,7 @@ public class GitConfigFileHelper : BlockNames
                 ThrowEx.NotImplementedCase(section);
                 break;
         }
+
         return "";
     }
 
@@ -78,7 +64,7 @@ public class GitConfigFileHelper : BlockNames
         var result = new ExistsNonExistsListGitConfig();
         var lines = SHGetLines.GetLines(gitConfigFileContent);
 
-        GitConfigSectionParser parser = new GitConfigSectionParser();
+        var parser = new GitConfigSectionParser();
 
         foreach (var item2 in lines)
         {
@@ -120,28 +106,21 @@ public class GitConfigFileHelper : BlockNames
         var keys = parser.Values.Select(d => d.Section);
         var values = Enum.GetValues<GitConfigSection>().ToList();
         foreach (var item in values)
-        {
             if (!keys.Contains(item))
-            {
                 result.NonExists.Add(new GitConfigSectionData(item));
-            }
-        }
 
         return result;
     }
 
     private static List<string> ParseBlocks(string s)
     {
-        List<string> result = new List<string>();
+        var result = new List<string>();
 
         var l = SHGetLines.GetLines(s);
-        for (int i = 0; i < l.Count; i++)
+        for (var i = 0; i < l.Count; i++)
         {
             var line = l[i];
-            if (line.StartsWith("["))
-            {
-                result.Add(line);
-            }
+            if (line.StartsWith("[")) result.Add(line);
         }
 
         return result;
