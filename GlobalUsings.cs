@@ -5,3 +5,5 @@ global using System.Text;
 global using System;
 global using SunamoGitConfig._sunamo;
 global using SunamoGitConfig.Enums;
+global using SunamoGitConfig;
+global using SunamoGitConfig.Consts;

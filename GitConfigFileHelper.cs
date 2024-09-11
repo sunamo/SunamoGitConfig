@@ -92,7 +92,15 @@ public class GitConfigFileHelper : BlockNames
                 }
                 else
                 {
-                    ThrowEx.NotImplementedCase(item);
+                    // todo asi není nejlepší nápad vyhodit výjimku. Tím zahodím i ty správné co tam jsou
+                    // todo místo exc vrátit seznam "neznámých"
+                    //ThrowEx.NotImplementedCase(item);
+
+                    if (result.UnknownHeaders == null)
+                    {
+                        result.UnknownHeaders = new List<string>();
+                    }
+                    result.UnknownHeaders.Add(item);
                 }
             }
             else

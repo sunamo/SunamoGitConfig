@@ -2,8 +2,9 @@ namespace SunamoGitConfig.Data;
 
 public class ExistsNonExistsListGitConfig
 {
-    public List<GitConfigSectionData> Exists = new List<GitConfigSectionData>();
-    public List<GitConfigSectionData> NonExists = new List<GitConfigSectionData>();
+    public List<GitConfigSectionData> Exists { get; set; } = new List<GitConfigSectionData>();
+    public List<GitConfigSectionData> NonExists { get; set; } = new List<GitConfigSectionData>();
+    public List<string> UnknownHeaders { get; set; }
 
     public string GetValue(GitConfigSection blockSection, string key)
     {
