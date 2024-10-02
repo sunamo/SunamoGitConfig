@@ -3,7 +3,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>24.8.23.1</Version>
+    <Version>24.10.2.1</Version>
     <Description>Serializer and deserializer for .git config files</Description>
     <PackageReleaseNotes>Not throwing exception </PackageReleaseNotes>
     <Authors>www.sunamo.cz</Authors>
@@ -13,6 +13,7 @@
     <RepositoryUrl>https://github.com/sunamo/SunamoGitConfig.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants);ASYNC;SunamoGitConfig;SunamoGitConfig.csproj</DefineConstants>
