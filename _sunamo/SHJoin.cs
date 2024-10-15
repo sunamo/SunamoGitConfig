@@ -1,4 +1,3 @@
-
 namespace SunamoGitConfig._sunamo;
 using System.Collections.Generic;
 
