@@ -29,8 +29,8 @@ public class GitConfigFileHelper : BlockNames
     private static void AppendBlock(StringBuilder sb, GitConfigSectionData data)
     {
         if (!data.Settings.Any()) return;
-        sb.AppendLine(AllStrings.lsqb + data.Section + PostfixForBlock(data.Section) + AllStrings.rsqb);
-        foreach (var item in data.Settings) sb.AppendLine("\t" + item.Key + AllStrings.swes + item.Value);
+        sb.AppendLine("[" + data.Section + PostfixForBlock(data.Section) + "]");
+        foreach (var item in data.Settings) sb.AppendLine("\t" + item.Key + "=" + item.Value);
     }
 
     private static string PostfixForBlock(GitConfigSection section)
@@ -92,8 +92,8 @@ public class GitConfigFileHelper : BlockNames
                 }
                 else
                 {
-                    // todo asi není nejlepší nápad vyhodit výjimku. Tím zahodím i ty správné co tam jsou
-                    // todo místo exc vrátit seznam "neznámých"
+                    // todo asi nenï¿½ nejlepï¿½ï¿½ nï¿½pad vyhodit vï¿½jimku. Tï¿½m zahodï¿½m i ty sprï¿½vnï¿½ co tam jsou
+                    // todo mï¿½sto exc vrï¿½tit seznam "neznï¿½mï¿½ch"
                     //ThrowEx.NotImplementedCase(item);
 
                     if (result.UnknownHeaders == null)

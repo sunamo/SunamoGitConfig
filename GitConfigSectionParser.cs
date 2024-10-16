@@ -17,10 +17,10 @@ public class GitConfigSectionParser
     {
         if (line.Trim() == string.Empty) return;
 
-        var parts = line.Split(AllStrings.swes).ToList();
+        var parts = line.Split("=").ToList();
         if (parts.Count > 2)
             ThrowEx.Custom("More than 2 parts");
-        else if (parts.Count == 1) ThrowEx.Custom("Line is without " + AllStrings.swes);
+        else if (parts.Count == 1) ThrowEx.Custom("Line is without " + "=");
 
         last.Settings.Add(parts[0], parts[1]);
     }
