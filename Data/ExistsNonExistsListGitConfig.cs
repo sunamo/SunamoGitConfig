@@ -2,11 +2,11 @@ namespace SunamoGitConfig.Data;
 
 public class ExistsNonExistsListGitConfig
 {
-    public List<GitConfigSectionData> Exists { get; set; } = new List<GitConfigSectionData>();
-    public List<GitConfigSectionData> NonExists { get; set; } = new List<GitConfigSectionData>();
-    public List<string> UnknownHeaders { get; set; }
+    public List<GitConfigSectionData> Exists { get; set; } = [];
+    public List<GitConfigSectionData> NonExists { get; set; } = [];
+    public List<string> UnknownHeaders { get; set; } = [];
 
-    public string GetValue(GitConfigSection blockSection, string key)
+    public string? GetValue(GitConfigSection blockSection, string key)
     {
         var block = Exists.FirstOrDefault(d => d.Section == blockSection);
 
@@ -17,13 +17,14 @@ public class ExistsNonExistsListGitConfig
 
         var pair = block.Settings.Where(d => d.Key == key);
 
-        if (pair.Count() == 0)
+        if (!pair.Any())
         {
             return null;
         }
 
         return pair.First().Value;
     }
+
 
     public void SetValue(GitConfigSection blockSection, string key, string value)
     {
@@ -36,15 +37,10 @@ public class ExistsNonExistsListGitConfig
             Exists.Add(block);
         }
 
-        if (block.Settings.ContainsKey(key))
+        if (!block.Settings.TryAdd(key, value))
         {
             block.Settings[key] = value;
         }
-        else
-        {
-            block.Settings.Add(key, value);
-        }
-
     }
 
 

@@ -3,9 +3,9 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>24.11.12.1</Version>
+    <Version>24.12.23.1</Version>
     <Description>Serializer and deserializer for .git config files</Description>
-    <PackageReleaseNotes>Fix empty string for spaces</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed warnings and infos</PackageReleaseNotes>
     <Authors>www.sunamo.cz</Authors>
     <Copyright>www.sunamo.cz</Copyright>
     <PackageReadmeFile>readme.md</PackageReadmeFile>

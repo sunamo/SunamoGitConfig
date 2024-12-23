@@ -3,7 +3,7 @@ internal class SH
 {
     internal static List<string> GetLines(string text)
     {
-        List<string> result = new List<string>();
+        List<string> result = [];
         using (StringReader sr = new StringReader(text))
         {
             string? line;

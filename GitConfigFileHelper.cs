@@ -8,9 +8,11 @@ public class GitConfigFileHelper : BlockNames
         for (var i = 0; i < l.Count; i++)
         {
             var line = l[i];
-            if (line.StartsWith("[")) continue;
+            if (line.StartsWith('[')) continue;
 
-            if (line.StartsWith("\t")) line = "\t" + line;
+            if (line.StartsWith('\t')) line = '\t' + line;
+
+            l[i] = line;
         }
 
         return SHJoin.JoinNL(l).Trim();
@@ -28,7 +30,7 @@ public class GitConfigFileHelper : BlockNames
 
     private static void AppendBlock(StringBuilder sb, GitConfigSectionData data)
     {
-        if (!data.Settings.Any()) return;
+        if (data.Settings.Count == 0) return;
         sb.AppendLine("[" + data.Section + PostfixForBlock(data.Section) + "]");
         foreach (var item in data.Settings) sb.AppendLine("\t" + item.Key + "=" + item.Value);
     }
@@ -69,7 +71,7 @@ public class GitConfigFileHelper : BlockNames
         foreach (var item2 in lines)
         {
             var item = item2.Trim();
-            if (item.StartsWith("["))
+            if (item.StartsWith('['))
             {
                 if (item.StartsWith(coreStart))
                 {
@@ -96,10 +98,7 @@ public class GitConfigFileHelper : BlockNames
                     // todo m�sto exc vr�tit seznam "nezn�m�ch"
                     //ThrowEx.NotImplementedCase(item);
 
-                    if (result.UnknownHeaders == null)
-                    {
-                        result.UnknownHeaders = new List<string>();
-                    }
+                    result.UnknownHeaders ??= [];
                     result.UnknownHeaders.Add(item);
                 }
             }
@@ -120,7 +119,7 @@ public class GitConfigFileHelper : BlockNames
         return result;
     }
 
-    private static List<string> ParseBlocks(string s)
+    public static List<string> ParseBlocks(string s)
     {
         var result = new List<string>();
 
@@ -128,7 +127,7 @@ public class GitConfigFileHelper : BlockNames
         for (var i = 0; i < l.Count; i++)
         {
             var line = l[i];
-            if (line.StartsWith("[")) result.Add(line);
+            if (line.StartsWith('[')) result.Add(line);
         }
 
         return result;

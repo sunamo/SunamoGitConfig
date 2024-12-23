@@ -1,13 +1,8 @@
 namespace SunamoGitConfig.Data;
 
-public class GitConfigSectionData
+public class GitConfigSectionData(GitConfigSection section)
 {
-    public GitConfigSection Section { get; set; }
-    public Dictionary<string, string> Settings { get; set; } = new Dictionary<string, string>();
-    public string Header { get; set; }
-
-    public GitConfigSectionData(GitConfigSection section)
-    {
-        Section = section;
-    }
+    public GitConfigSection Section { get; set; } = section;
+    public Dictionary<string, string> Settings { get; set; } = [];
+    public string? Header { get; set; }
 }
