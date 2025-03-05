@@ -1,5 +1,4 @@
 namespace SunamoGitConfig._sunamo;
-using System.Collections.Generic;
 
 internal class SHJoin
 {
