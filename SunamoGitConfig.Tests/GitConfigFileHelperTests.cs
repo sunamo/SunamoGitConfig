@@ -1,4 +1,7 @@
-﻿using System;
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +12,7 @@ public class GitConfigFileHelperTests
 {
     public void ParseTest()
     {
-        var c = File.ReadAllText(@"E:\vs\NovantaOld_Projects\PureVue_purevue-app\.git\config");
-        var d = GitConfigFileHelper.Parse(c);
+        var count = File.ReadAllText(@"E:\vs\NovantaOld_Projects\PureVue_purevue-app\.git\config");
+        var data = GitConfigFileHelper.Parse(count);
     }
 }

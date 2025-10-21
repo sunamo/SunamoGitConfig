@@ -1,38 +1,41 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoGitConfig;
 
 public class GitConfigFileHelper : BlockNames
 {
     public static string Format(string actual)
     {
-        var l = SHGetLines.GetLines(actual);
-        for (var i = 0; i < l.Count; i++)
+        var list = SHGetLines.GetLines(actual);
+        for (var i = 0; i < list.Count; i++)
         {
-            var line = l[i];
+            var line = list[i];
             if (line.StartsWith('[')) continue;
 
             if (line.StartsWith('\t')) line = '\t' + line;
 
-            l[i] = line;
+            list[i] = line;
         }
 
-        return SHJoin.JoinNL(l).Trim();
+        return SHJoin.JoinNL(list).Trim();
     }
 
     public static void Save(string path, ExistsNonExistsListGitConfig content)
     {
-        var sb = new StringBuilder();
+        var stringBuilder = new StringBuilder();
 
-        foreach (var item in content.Exists) AppendBlock(sb, item);
+        foreach (var item in content.Exists) AppendBlock(stringBuilder, item);
 
-        var ts = sb.ToString();
+        var ts = stringBuilder.ToString();
         File.WriteAllText(path, ts);
     }
 
-    private static void AppendBlock(StringBuilder sb, GitConfigSectionData data)
+    private static void AppendBlock(StringBuilder stringBuilder, GitConfigSectionData data)
     {
         if (data.Settings.Count == 0) return;
-        sb.AppendLine("[" + data.Section + PostfixForBlock(data.Section) + "]");
-        foreach (var item in data.Settings) sb.AppendLine("\t" + item.Key + "=" + item.Value);
+        stringBuilder.AppendLine("[" + data.Section + PostfixForBlock(data.Section) + "]");
+        foreach (var item in data.Settings) stringBuilder.AppendLine("\t" + item.Key + "=" + item.Value);
     }
 
     private static string PostfixForBlock(GitConfigSection section)
@@ -119,14 +122,14 @@ public class GitConfigFileHelper : BlockNames
         return result;
     }
 
-    public static List<string> ParseBlocks(string s)
+    public static List<string> ParseBlocks(string text)
     {
         var result = new List<string>();
 
-        var l = SHGetLines.GetLines(s);
-        for (var i = 0; i < l.Count; i++)
+        var list = SHGetLines.GetLines(text);
+        for (var i = 0; i < list.Count; i++)
         {
-            var line = l[i];
+            var line = list[i];
             if (line.StartsWith('[')) result.Add(line);
         }
 
