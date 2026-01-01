@@ -1,10 +1,18 @@
 namespace SunamoGitConfig;
 
+/// <summary>
+/// Helper class for working with Git configuration files
+/// </summary>
 public class GitConfigFileHelper : BlockNames
 {
-    public static string Format(string actual)
+    /// <summary>
+    /// Formats Git configuration content by ensuring proper indentation
+    /// </summary>
+    /// <param name="content">The Git configuration content to format</param>
+    /// <returns>Formatted Git configuration content</returns>
+    public static string Format(string content)
     {
-        var list = SHGetLines.GetLines(actual);
+        var list = SHGetLines.GetLines(content);
         for (var i = 0; i < list.Count; i++)
         {
             var line = list[i];
@@ -18,16 +26,26 @@ public class GitConfigFileHelper : BlockNames
         return SHJoin.JoinNL(list).Trim();
     }
 
+    /// <summary>
+    /// Saves Git configuration data to a file
+    /// </summary>
+    /// <param name="path">The file path where to save the configuration</param>
+    /// <param name="content">The Git configuration data to save</param>
     public static void Save(string path, ExistsNonExistsListGitConfig content)
     {
         var stringBuilder = new StringBuilder();
 
         foreach (var item in content.Exists) AppendBlock(stringBuilder, item);
 
-        var ts = stringBuilder.ToString();
-        File.WriteAllText(path, ts);
+        var text = stringBuilder.ToString();
+        File.WriteAllText(path, text);
     }
 
+    /// <summary>
+    /// Appends a configuration section block to the StringBuilder
+    /// </summary>
+    /// <param name="stringBuilder">The StringBuilder to append to</param>
+    /// <param name="data">The configuration section data to append</param>
     private static void AppendBlock(StringBuilder stringBuilder, GitConfigSectionData data)
     {
         if (data.Settings.Count == 0) return;
@@ -35,6 +53,11 @@ public class GitConfigFileHelper : BlockNames
         foreach (var item in data.Settings) stringBuilder.AppendLine("\t" + item.Key + "=" + item.Value);
     }
 
+    /// <summary>
+    /// Gets the postfix string for a configuration section header (e.g., ' "origin"' for remote section)
+    /// </summary>
+    /// <param name="section">The Git configuration section</param>
+    /// <returns>The postfix string for the section header</returns>
     private static string PostfixForBlock(GitConfigSection section)
     {
         switch (section)
@@ -56,11 +79,21 @@ public class GitConfigFileHelper : BlockNames
         return "";
     }
 
+    /// <summary>
+    /// Loads and parses a Git configuration file
+    /// </summary>
+    /// <param name="path">The path to the Git configuration file</param>
+    /// <returns>Parsed Git configuration data</returns>
     public static ExistsNonExistsListGitConfig Load(string path)
     {
         return Parse(File.ReadAllText(path));
     }
 
+    /// <summary>
+    /// Parses Git configuration file content
+    /// </summary>
+    /// <param name="gitConfigFileContent">The content of the Git configuration file</param>
+    /// <returns>Parsed Git configuration data with existing and non-existing sections</returns>
     public static ExistsNonExistsListGitConfig Parse(string gitConfigFileContent)
     {
         var result = new ExistsNonExistsListGitConfig();
@@ -68,36 +101,34 @@ public class GitConfigFileHelper : BlockNames
 
         var parser = new GitConfigSectionParser();
 
-        foreach (var item2 in lines)
+        foreach (var rawLine in lines)
         {
-            var item = item2.Trim();
+            var item = rawLine.Trim();
             if (item.StartsWith('['))
             {
-                if (item.StartsWith(coreStart))
+                if (item.StartsWith(CoreStart))
                 {
                     parser.AddHeaderBlock(GitConfigSection.core, item);
                 }
-                else if (item.StartsWith(remoteStart))
+                else if (item.StartsWith(RemoteStart))
                 {
                     parser.AddHeaderBlock(GitConfigSection.remote, item);
                 }
-                else if (item.StartsWith(branchStart))
+                else if (item.StartsWith(BranchStart))
                 {
                     parser.AddHeaderBlock(GitConfigSection.branch, item);
                 }
-                else if (item == mergeStart || item == mergetoolStart)
+                else if (item == MergeStart || item == MergetoolStart)
                 {
                 }
-                else if (item.StartsWith(submoduleStart))
+                else if (item.StartsWith(SubmoduleStart))
                 {
                     parser.AddHeaderBlock(GitConfigSection.submodule, item);
                 }
                 else
                 {
-                    // todo asi nen� nejlep�� n�pad vyhodit v�jimku. T�m zahod�m i ty spr�vn� co tam jsou
-                    // todo m�sto exc vr�tit seznam "nezn�m�ch"
-                    //ThrowEx.NotImplementedCase(item);
-
+                    // Unknown header - add to the list instead of throwing exception
+                    // This allows partial parsing without losing valid sections
                     result.UnknownHeaders ??= [];
                     result.UnknownHeaders.Add(item);
                 }
@@ -119,6 +150,11 @@ public class GitConfigFileHelper : BlockNames
         return result;
     }
 
+    /// <summary>
+    /// Parses and returns only the block headers from Git configuration content
+    /// </summary>
+    /// <param name="text">The Git configuration file content</param>
+    /// <returns>List of block header lines (lines starting with '[')</returns>
     public static List<string> ParseBlocks(string text)
     {
         var result = new List<string>();

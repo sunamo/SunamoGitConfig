@@ -1,11 +1,37 @@
 namespace SunamoGitConfig;
 
+/// <summary>
+/// Constants for Git configuration block header names
+/// </summary>
 public class BlockNames
 {
-    public const string coreStart = "[core]";
-    public const string remoteStart = "[remote ";
-    public const string branchStart = "[branch ";
-    public const string mergeStart = "[merge]";
-    public const string mergetoolStart = "[mergetool]";
-    public const string submoduleStart = "[submodule ";
+    /// <summary>
+    /// Start of [core] block
+    /// </summary>
+    public const string CoreStart = "[core]";
+
+    /// <summary>
+    /// Start of [remote] block
+    /// </summary>
+    public const string RemoteStart = "[remote ";
+
+    /// <summary>
+    /// Start of [branch] block
+    /// </summary>
+    public const string BranchStart = "[branch ";
+
+    /// <summary>
+    /// Start of [merge] block
+    /// </summary>
+    public const string MergeStart = "[merge]";
+
+    /// <summary>
+    /// Start of [mergetool] block
+    /// </summary>
+    public const string MergetoolStart = "[mergetool]";
+
+    /// <summary>
+    /// Start of [submodule] block
+    /// </summary>
+    public const string SubmoduleStart = "[submodule ";
 }
