@@ -72,9 +72,9 @@ internal class SHGetLines
 
         list.RemoveAt(index);
 
-        foreach (var item in itemsToInsert)
+        foreach (var line in itemsToInsert)
         {
-            list.Insert(index, item);
+            list.Insert(index, line);
         }
     }
 }

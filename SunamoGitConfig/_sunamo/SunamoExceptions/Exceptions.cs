@@ -1,7 +1,5 @@
 namespace SunamoGitConfig._sunamo.SunamoExceptions;
 
-// © www.sunamo.cz. All Rights Reserved.
-
 /// <summary>
 /// Helper class for formatting exception messages
 /// </summary>
@@ -22,27 +20,27 @@ internal sealed partial class Exceptions
     /// <summary>
     /// Gets the place (type, method, stack trace) where an exception occurred
     /// </summary>
-    /// <param name="isFillAlsoFirstTwo">Whether to fill the first two return values (type and method name)</param>
+    /// <param name="shouldFillFirstTwo">Whether to fill the first two return values (type and method name)</param>
     /// <returns>Tuple containing type name, method name, and formatted stack trace</returns>
-    internal static Tuple<string, string, string> PlaceOfException(bool isFillAlsoFirstTwo = true)
+    internal static Tuple<string, string, string> PlaceOfException(bool shouldFillFirstTwo = true)
     {
         StackTrace stackTrace = new();
         var stackTraceText = stackTrace.ToString();
         var lines = stackTraceText.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
         lines.RemoveAt(0);
-        var i = 0;
+        var currentLineIndex = 0;
         string type = string.Empty;
         string methodName = string.Empty;
-        for (; i < lines.Count; i++)
+        for (; currentLineIndex < lines.Count; currentLineIndex++)
         {
-            var item = lines[i];
-            if (isFillAlsoFirstTwo)
-                if (!item.StartsWith("   at ThrowEx"))
+            var line = lines[currentLineIndex];
+            if (shouldFillFirstTwo)
+                if (!line.StartsWith("   at ThrowEx"))
                 {
-                    TypeAndMethodName(item, out type, out methodName);
-                    isFillAlsoFirstTwo = false;
+                    TypeAndMethodName(line, out type, out methodName);
+                    shouldFillFirstTwo = false;
                 }
-            if (item.StartsWith("at System."))
+            if (line.StartsWith("at System."))
             {
                 lines.Add(string.Empty);
                 lines.Add(string.Empty);
@@ -61,8 +59,8 @@ internal sealed partial class Exceptions
     internal static void TypeAndMethodName(string stackTraceLine, out string type, out string methodName)
     {
         var afterAt = stackTraceLine.Split("at ")[1].Trim();
-        var text = afterAt.Split("(")[0];
-        var parts = text.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        var methodFullName = afterAt.Split("(")[0];
+        var parts = methodFullName.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         methodName = parts[^1];
         parts.RemoveAt(parts.Count - 1);
         type = string.Join(".", parts);
@@ -79,7 +77,7 @@ internal sealed partial class Exceptions
         var methodBase = stackTrace.GetFrame(frameDepth)?.GetMethod();
         if (methodBase == null)
         {
-            return "Method name cannot be get";
+            return "Method name could not be retrieved";
         }
         var methodName = methodBase.Name;
         return methodName;

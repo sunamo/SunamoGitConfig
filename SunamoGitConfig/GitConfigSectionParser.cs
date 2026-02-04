@@ -8,12 +8,12 @@ public class GitConfigSectionParser
     /// <summary>
     /// Can be null because AddHeaderBlock can be called multiple times, so it cannot be set in constructor
     /// </summary>
-    private GitConfigSectionData? last;
+    private GitConfigSectionData? currentSection;
 
     /// <summary>
     /// List of parsed configuration sections
     /// </summary>
-    public List<GitConfigSectionData> Values = [];
+    public List<GitConfigSectionData> Values { get; set; } = [];
 
     /// <summary>
     /// Adds a new configuration section header
@@ -22,12 +22,12 @@ public class GitConfigSectionParser
     /// <param name="line">The header line from the config file</param>
     public void AddHeaderBlock(GitConfigSection section, string line)
     {
-        last = new GitConfigSectionData(section)
+        currentSection = new GitConfigSectionData(section)
         {
             Header = line
         };
 
-        Values.Add(last);
+        Values.Add(currentSection);
     }
 
     /// <summary>
@@ -43,11 +43,11 @@ public class GitConfigSectionParser
             ThrowEx.Custom("More than 2 parts");
         else if (parts.Count == 1) ThrowEx.Custom("Line is without " + "=");
 
-        if (last == null)
+        if (currentSection == null)
         {
             throw new Exception($"Call {nameof(AddHeaderBlock)} firstly!");
         }
 
-        last.Settings.Add(parts[0], parts[1]);
+        currentSection.Settings.Add(parts[0], parts[1]);
     }
 }

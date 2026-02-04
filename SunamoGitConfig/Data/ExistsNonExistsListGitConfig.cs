@@ -28,14 +28,14 @@ public class ExistsNonExistsListGitConfig
     /// <returns>The value if found, null otherwise</returns>
     public string? GetValue(GitConfigSection blockSection, string key)
     {
-        var block = Exists.FirstOrDefault(d => d.Section == blockSection);
+        var block = Exists.FirstOrDefault(section => section.Section == blockSection);
 
         if (block == default(GitConfigSectionData))
         {
             return null;
         }
 
-        var pair = block.Settings.Where(d => d.Key == key);
+        var pair = block.Settings.Where(setting => setting.Key == key);
 
         if (!pair.Any())
         {
@@ -53,7 +53,7 @@ public class ExistsNonExistsListGitConfig
     /// <param name="value">The value to assign to the key</param>
     public void SetValue(GitConfigSection blockSection, string key, string value)
     {
-        var block = Exists.FirstOrDefault(d => d.Section == blockSection);
+        var block = Exists.FirstOrDefault(section => section.Section == blockSection);
 
         if (block == default(GitConfigSectionData))
         {

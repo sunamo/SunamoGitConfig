@@ -9,8 +9,8 @@ internal partial class ThrowEx
     internal static bool Custom(string message, bool reallyThrow = true, string secondMessage = "")
     {
         string joined = string.Join(" ", message, secondMessage);
-        string? str = Exceptions.Custom(FullNameOfExecutedCode(), joined);
-        return ThrowIsNotNull(str, reallyThrow);
+        string? exceptionMessage = Exceptions.Custom(FullNameOfExecutedCode(), joined);
+        return ThrowIsNotNull(exceptionMessage, reallyThrow);
     }
 
     internal static bool NotImplementedCase(object notImplementedName)
@@ -23,8 +23,8 @@ internal partial class ThrowEx
     /// <returns>Full name in format "TypeName.MethodName"</returns>
     internal static string FullNameOfExecutedCode()
     {
-        Tuple<string, string, string> placeOfExc = Exceptions.PlaceOfException();
-        string fullName = FullNameOfExecutedCode(placeOfExc.Item1, placeOfExc.Item2, true);
+        Tuple<string, string, string> placeOfException = Exceptions.PlaceOfException();
+        string fullName = FullNameOfExecutedCode(placeOfException.Item1, placeOfException.Item2, true);
         return fullName;
     }
 
@@ -50,21 +50,21 @@ internal partial class ThrowEx
         string typeFullName;
         if (type is Type type2)
         {
-            typeFullName = type2.FullName ?? "Type cannot be get via type is Type type2";
+            typeFullName = type2.FullName ?? "Type could not be retrieved via type is Type type2";
         }
         else if (type is MethodBase method)
         {
-            typeFullName = method.ReflectedType?.FullName ?? "Type cannot be get via type is MethodBase method";
+            typeFullName = method.ReflectedType?.FullName ?? "Type could not be retrieved via type is MethodBase method";
             methodName = method.Name;
         }
         else if (type is string)
         {
-            typeFullName = type.ToString() ?? "Type cannot be get via type is string";
+            typeFullName = type.ToString() ?? "Type could not be retrieved via type is string";
         }
         else
         {
             Type typeInfo = type.GetType();
-            typeFullName = typeInfo.FullName ?? "Type cannot be get via type.GetType()";
+            typeFullName = typeInfo.FullName ?? "Type could not be retrieved via type.GetType()";
         }
         return string.Concat(typeFullName, ".", methodName);
     }
@@ -100,8 +100,8 @@ internal partial class ThrowEx
     /// <returns>True if exception was thrown or would be thrown, false otherwise</returns>
     internal static bool ThrowIsNotNull<A>(Func<string, A, string?> exceptionFactory, A exceptionParameter)
     {
-        string? exc = exceptionFactory(FullNameOfExecutedCode(), exceptionParameter);
-        return ThrowIsNotNull(exc);
+        string? exception = exceptionFactory(FullNameOfExecutedCode(), exceptionParameter);
+        return ThrowIsNotNull(exception);
     }
 
     #endregion

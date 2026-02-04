@@ -18,7 +18,7 @@ public class GitConfigFileHelper : BlockNames
             var line = list[i];
             if (line.StartsWith('[')) continue;
 
-            if (line.StartsWith('\t')) line = '\t' + line;
+            if (!line.StartsWith('\t')) line = '\t' + line;
 
             list[i] = line;
         }
@@ -35,7 +35,7 @@ public class GitConfigFileHelper : BlockNames
     {
         var stringBuilder = new StringBuilder();
 
-        foreach (var item in content.Exists) AppendBlock(stringBuilder, item);
+        foreach (var sectionData in content.Exists) AppendBlock(stringBuilder, sectionData);
 
         var text = stringBuilder.ToString();
         File.WriteAllText(path, text);
@@ -50,7 +50,7 @@ public class GitConfigFileHelper : BlockNames
     {
         if (data.Settings.Count == 0) return;
         stringBuilder.AppendLine("[" + data.Section + PostfixForBlock(data.Section) + "]");
-        foreach (var item in data.Settings) stringBuilder.AppendLine("\t" + item.Key + "=" + item.Value);
+        foreach (var setting in data.Settings) stringBuilder.AppendLine("\t" + setting.Key + "=" + setting.Value);
     }
 
     /// <summary>
@@ -103,49 +103,49 @@ public class GitConfigFileHelper : BlockNames
 
         foreach (var rawLine in lines)
         {
-            var item = rawLine.Trim();
-            if (item.StartsWith('['))
+            var line = rawLine.Trim();
+            if (line.StartsWith('['))
             {
-                if (item.StartsWith(CoreStart))
+                if (line.StartsWith(CoreStart))
                 {
-                    parser.AddHeaderBlock(GitConfigSection.core, item);
+                    parser.AddHeaderBlock(GitConfigSection.core, line);
                 }
-                else if (item.StartsWith(RemoteStart))
+                else if (line.StartsWith(RemoteStart))
                 {
-                    parser.AddHeaderBlock(GitConfigSection.remote, item);
+                    parser.AddHeaderBlock(GitConfigSection.remote, line);
                 }
-                else if (item.StartsWith(BranchStart))
+                else if (line.StartsWith(BranchStart))
                 {
-                    parser.AddHeaderBlock(GitConfigSection.branch, item);
+                    parser.AddHeaderBlock(GitConfigSection.branch, line);
                 }
-                else if (item == MergeStart || item == MergetoolStart)
+                else if (line == MergeStart || line == MergetoolStart)
                 {
                 }
-                else if (item.StartsWith(SubmoduleStart))
+                else if (line.StartsWith(SubmoduleStart))
                 {
-                    parser.AddHeaderBlock(GitConfigSection.submodule, item);
+                    parser.AddHeaderBlock(GitConfigSection.submodule, line);
                 }
                 else
                 {
                     // Unknown header - add to the list instead of throwing exception
                     // This allows partial parsing without losing valid sections
                     result.UnknownHeaders ??= [];
-                    result.UnknownHeaders.Add(item);
+                    result.UnknownHeaders.Add(line);
                 }
             }
             else
             {
-                parser.AddSettingsPair(item);
+                parser.AddSettingsPair(line);
             }
         }
 
         result.Exists = parser.Values;
 
-        var keys = parser.Values.Select(d => d.Section);
+        var keys = parser.Values.Select(value => value.Section);
         var values = Enum.GetValues<GitConfigSection>().ToList();
-        foreach (var item in values)
-            if (!keys.Contains(item))
-                result.NonExists.Add(new GitConfigSectionData(item));
+        foreach (var section in values)
+            if (!keys.Contains(section))
+                result.NonExists.Add(new GitConfigSectionData(section));
 
         return result;
     }
