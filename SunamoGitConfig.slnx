@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="SunamoGitConfig.Tests\\SunamoGitConfig.Tests.csproj" />
+  <Project Path="RunnerGitConfig\\RunnerGitConfig.csproj" />
+  <Project Path="SunamoGitConfig\SunamoGitConfig.csproj" />
+</Solution>
