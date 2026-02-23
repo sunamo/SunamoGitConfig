@@ -92,12 +92,12 @@ public class GitConfigFileHelper : BlockNames
     /// <summary>
     /// Parses Git configuration file content
     /// </summary>
-    /// <param name="gitConfigFileContent">The content of the Git configuration file</param>
+    /// <param name="content">The content of the Git configuration file</param>
     /// <returns>Parsed Git configuration data with existing and non-existing sections</returns>
-    public static ExistsNonExistsListGitConfig Parse(string gitConfigFileContent)
+    public static ExistsNonExistsListGitConfig Parse(string content)
     {
         var result = new ExistsNonExistsListGitConfig();
-        var lines = SHGetLines.GetLines(gitConfigFileContent);
+        var lines = SHGetLines.GetLines(content);
 
         var parser = new GitConfigSectionParser();
 
