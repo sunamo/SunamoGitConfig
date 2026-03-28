@@ -30,12 +30,12 @@ public class GitConfigFileHelper : BlockNames
     /// Saves Git configuration data to a file
     /// </summary>
     /// <param name="path">The file path where to save the configuration</param>
-    /// <param name="content">The Git configuration data to save</param>
-    public static void Save(string path, ExistsNonExistsListGitConfig content)
+    /// <param name="config">The Git configuration data to save</param>
+    public static void Save(string path, ExistsNonExistsListGitConfig config)
     {
         var stringBuilder = new StringBuilder();
 
-        foreach (var sectionData in content.Exists) AppendBlock(stringBuilder, sectionData);
+        foreach (var sectionData in config.Exists) AppendBlock(stringBuilder, sectionData);
 
         var text = stringBuilder.ToString();
         File.WriteAllText(path, text);
