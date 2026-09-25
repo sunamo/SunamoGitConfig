@@ -1,27 +1,14 @@
 namespace SunamoGitConfig._sunamo.SunamoExceptions;
 
-/// <summary>
-/// Helper class for formatting exception messages
-/// </summary>
 internal sealed partial class Exceptions
 {
     #region Other
 
-    /// <summary>
-    /// Checks and formats the prefix string for exception messages
-    /// </summary>
-    /// <param name="before">The prefix string to check</param>
-    /// <returns>Formatted prefix string with colon and space, or empty string if input is null/whitespace</returns>
     internal static string CheckBefore(string before)
     {
         return string.IsNullOrWhiteSpace(before) ? string.Empty : before + ": ";
     }
 
-    /// <summary>
-    /// Gets the place (type, method, stack trace) where an exception occurred
-    /// </summary>
-    /// <param name="shouldFillFirstTwo">Whether to fill the first two return values (type and method name)</param>
-    /// <returns>Tuple containing type name, method name, and formatted stack trace</returns>
     internal static Tuple<string, string, string> PlaceOfException(bool shouldFillFirstTwo = true)
     {
         StackTrace stackTrace = new();
@@ -50,12 +37,6 @@ internal sealed partial class Exceptions
         return new Tuple<string, string, string>(type, methodName, string.Join(Environment.NewLine, lines));
     }
 
-    /// <summary>
-    /// Extracts type name and method name from a stack trace line
-    /// </summary>
-    /// <param name="stackTraceLine">The stack trace line to parse</param>
-    /// <param name="type">Output parameter for the type name</param>
-    /// <param name="methodName">Output parameter for the method name</param>
     internal static void TypeAndMethodName(string stackTraceLine, out string type, out string methodName)
     {
         var afterAt = stackTraceLine.Split("at ")[1].Trim();
@@ -66,11 +47,6 @@ internal sealed partial class Exceptions
         type = string.Join(".", parts);
     }
 
-    /// <summary>
-    /// Gets the name of the calling method from the stack trace
-    /// </summary>
-    /// <param name="frameDepth">The depth in the stack trace to retrieve (default is 1)</param>
-    /// <returns>The name of the calling method, or error message if not available</returns>
     internal static string CallingMethod(int frameDepth = 1)
     {
         StackTrace stackTrace = new();
@@ -86,24 +62,12 @@ internal sealed partial class Exceptions
 
     #region OnlyReturnString
 
-    /// <summary>
-    /// Creates a custom exception message with optional prefix
-    /// </summary>
-    /// <param name="before">The prefix to add before the message</param>
-    /// <param name="message">The exception message</param>
-    /// <returns>Formatted exception message</returns>
     internal static string? Custom(string before, string message)
     {
         return CheckBefore(before) + message;
     }
     #endregion
 
-    /// <summary>
-    /// Creates a "not implemented case" exception message
-    /// </summary>
-    /// <param name="before">The prefix to add before the message</param>
-    /// <param name="notImplementedName">The name or type of the not implemented case</param>
-    /// <returns>Formatted "not implemented case" exception message</returns>
     internal static string? NotImplementedCase(string before, object notImplementedName)
     {
         var suffix = string.Empty;
