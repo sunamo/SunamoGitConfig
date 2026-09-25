@@ -1,7 +1,15 @@
 namespace SunamoGitConfig;
 
+/// <summary>
+/// Helper class for working with Git configuration files
+/// </summary>
 public class GitConfigFileHelper : BlockNames
 {
+    /// <summary>
+    /// Formats Git configuration content by ensuring proper indentation
+    /// </summary>
+    /// <param name="content">The Git configuration content to format</param>
+    /// <returns>Formatted Git configuration content</returns>
     public static string Format(string content)
     {
         var list = SHGetLines.GetLines(content);
@@ -18,6 +26,11 @@ public class GitConfigFileHelper : BlockNames
         return SHJoin.JoinNL(list).Trim();
     }
 
+    /// <summary>
+    /// Saves Git configuration data to a file
+    /// </summary>
+    /// <param name="path">The file path where to save the configuration</param>
+    /// <param name="config">The Git configuration data to save</param>
     public static void Save(string path, ExistsNonExistsListGitConfig config)
     {
         var stringBuilder = new StringBuilder();
@@ -28,6 +41,11 @@ public class GitConfigFileHelper : BlockNames
         File.WriteAllText(path, text);
     }
 
+    /// <summary>
+    /// Appends a configuration section block to the StringBuilder
+    /// </summary>
+    /// <param name="stringBuilder">The StringBuilder to append to</param>
+    /// <param name="data">The configuration section data to append</param>
     private static void AppendBlock(StringBuilder stringBuilder, GitConfigSectionData data)
     {
         if (data.Settings.Count == 0) return;
@@ -35,6 +53,11 @@ public class GitConfigFileHelper : BlockNames
         foreach (var setting in data.Settings) stringBuilder.AppendLine("\t" + setting.Key + "=" + setting.Value);
     }
 
+    /// <summary>
+    /// Gets the postfix string for a configuration section header (e.g., ' "origin"' for remote section)
+    /// </summary>
+    /// <param name="section">The Git configuration section</param>
+    /// <returns>The postfix string for the section header</returns>
     private static string PostfixForBlock(GitConfigSection section)
     {
         switch (section)
@@ -56,11 +79,21 @@ public class GitConfigFileHelper : BlockNames
         return "";
     }
 
+    /// <summary>
+    /// Loads and parses a Git configuration file
+    /// </summary>
+    /// <param name="path">The path to the Git configuration file</param>
+    /// <returns>Parsed Git configuration data</returns>
     public static ExistsNonExistsListGitConfig Load(string path)
     {
         return Parse(File.ReadAllText(path));
     }
 
+    /// <summary>
+    /// Parses Git configuration file content
+    /// </summary>
+    /// <param name="content">The content of the Git configuration file</param>
+    /// <returns>Parsed Git configuration data with existing and non-existing sections</returns>
     public static ExistsNonExistsListGitConfig Parse(string content)
     {
         var result = new ExistsNonExistsListGitConfig();
@@ -117,6 +150,11 @@ public class GitConfigFileHelper : BlockNames
         return result;
     }
 
+    /// <summary>
+    /// Parses and returns only the block headers from Git configuration content
+    /// </summary>
+    /// <param name="text">The Git configuration file content</param>
+    /// <returns>List of block header lines (lines starting with '[')</returns>
     public static List<string> ParseBlocks(string text)
     {
         var result = new List<string>();
