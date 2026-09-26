@@ -142,7 +142,7 @@ public class GitConfigFileHelper : BlockNames
         result.Exists = parser.Values;
 
         var keys = parser.Values.Select(value => value.Section);
-        var values = Enum.GetValues<GitConfigSection>().ToList();
+        var values = ((GitConfigSection[])Enum.GetValues(typeof(GitConfigSection))).ToList();
         foreach (var section in values)
             if (!keys.Contains(section))
                 result.NonExists.Add(new GitConfigSectionData(section));
