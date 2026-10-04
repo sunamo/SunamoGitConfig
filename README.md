@@ -1,5 +1,10 @@
 # SunamoGitConfig
 
+## Short description
+
+Serializátor a deserializátor konfiguračních souborů .git (config). Třídy GitConfigFileHelper a GitConfigSectionParser převádějí sekce, například remote, na datové objekty a zpět. Obsahuje Runner a testy.
+
+
 Serializer and deserializer for .git config files
 
 ## Overview
