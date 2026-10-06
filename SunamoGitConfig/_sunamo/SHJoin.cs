@@ -1,8 +1,5 @@
 namespace SunamoGitConfig._sunamo;
 
-/// <summary>
-/// Helper class for joining strings
-/// </summary>
 internal class SHJoin
 {
     /// <summary>
