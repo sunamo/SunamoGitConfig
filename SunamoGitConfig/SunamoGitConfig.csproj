@@ -9,6 +9,7 @@
     <Authors>www.sunamo.cz</Authors>
     <Copyright>www.sunamo.cz</Copyright>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageTags>sunamo;dotnet;git;config</PackageTags>
     <PackageProjectUrl>https://sunamo.github.io/PlatformIndependentNuGetPackages/SunamoGitConfig/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/sunamo/SunamoGitConfig.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
