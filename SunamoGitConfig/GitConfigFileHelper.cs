@@ -1,7 +1,15 @@
 namespace SunamoGitConfig;
 
+/// <summary>
+/// Represents the git config file helper type.
+/// </summary>
 public class GitConfigFileHelper : BlockNames
 {
+    /// <summary>
+    /// Format.
+    /// </summary>
+    /// <param name="content">The content.</param>
+    /// <returns>The format result.</returns>
     public static string Format(string content)
     {
         var list = SHGetLines.GetLines(content);
@@ -18,6 +26,11 @@ public class GitConfigFileHelper : BlockNames
         return SHJoin.JoinNL(list).Trim();
     }
 
+    /// <summary>
+    /// Save.
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <param name="config">The config.</param>
     public static void Save(string path, ExistsNonExistsListGitConfig config)
     {
         var stringBuilder = new StringBuilder();
@@ -56,11 +69,21 @@ public class GitConfigFileHelper : BlockNames
         return "";
     }
 
+    /// <summary>
+    /// Load.
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <returns>The load result.</returns>
     public static ExistsNonExistsListGitConfig Load(string path)
     {
         return Parse(File.ReadAllText(path));
     }
 
+    /// <summary>
+    /// Parse.
+    /// </summary>
+    /// <param name="content">The content.</param>
+    /// <returns>The parse result.</returns>
     public static ExistsNonExistsListGitConfig Parse(string content)
     {
         var result = new ExistsNonExistsListGitConfig();
@@ -117,6 +140,11 @@ public class GitConfigFileHelper : BlockNames
         return result;
     }
 
+    /// <summary>
+    /// Parse blocks.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The parse blocks result.</returns>
     public static List<string> ParseBlocks(string text)
     {
         var result = new List<string>();
